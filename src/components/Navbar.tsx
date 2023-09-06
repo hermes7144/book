@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiBook } from 'react-icons/fi';
 import { BsFillPencilFill } from 'react-icons/bs';
 import User from './User';
-import Button from './ui/button';
 import { useAuthContext } from '../context/AuthContext';
+import Button from './ui/Button';
 
 export default function Navbar() {
   const { user, login, logout } = useAuthContext();

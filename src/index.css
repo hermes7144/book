@@ -10,11 +10,14 @@ body {
   @apply flex flex-col items-center;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
 #root {
   @apply w-full max-w-screen-2xl;
 }
 
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+input {
+  @apply p-4 outline-none border border-gray-300 my-1;
+}
