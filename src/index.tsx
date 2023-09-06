@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import AllBooks from './pages/AllBooks';
 import NewBook from './pages/NewBook';
 import BookDetail from './pages/BookDetail';
+import ProtectedRoute from './pages/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,14 @@ const router = createBrowserRouter([
     children: [
       { index: true, path: '/', element: <Home /> },
       { path: '/books', element: <AllBooks /> },
-      { path: '/books/new', element: <NewBook /> },
+      {
+        path: '/books/new',
+        element: (
+          <ProtectedRoute requireAdmin>
+            <NewBook />
+          </ProtectedRoute>
+        ),
+      },
       { path: '/books/:id', element: <BookDetail /> },
     ],
   },
