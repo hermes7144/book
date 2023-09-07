@@ -26,7 +26,7 @@ export default function NewBook() {
 
   const handleSearch = async () => {
     try {
-      const res = await axios.get('http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=ttbkichancho1741001&Query=aladdin&QueryType=Title&MaxResults=10&start=1&SearchTarget=Book&output=JS&Version=20131101');
+      const res = await axios.get(`/itemSearch?&Query=${book}&MaxResults=10&${process.env.REACT_APP_ALADIN_ITEM_SEARCH}`);
       console.log(res.data); // Use res.data to access the response data
       // Do something with the response data here
     } catch (error) {
@@ -54,7 +54,7 @@ export default function NewBook() {
   return (
     <section className='w-full text-center'>
       {product.url && <img src={product.url} alt='local file' />}
-      <h2 className='text-2xl font-bold my-4'>새로운 책 등록</h2>
+      {/* <h2 className='text-2xl font-bold my-4'>새로운 책 등록</h2> */}
       {success && <p>🍬 {success}</p>}
       <div className='flex flex-col px-12'>
         <input type='text' name='book' value={book ?? ''} placeholder='책' onChange={handleBook} />
