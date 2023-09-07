@@ -10,6 +10,7 @@ import AllBooks from './pages/AllBooks';
 import NewBook from './pages/NewBook';
 import BookDetail from './pages/BookDetail';
 import ProtectedRoute from './pages/ProtectedRoute';
+import Neighborhood from './pages/Neighborhood';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,14 @@ const router = createBrowserRouter([
         ),
       },
       { path: '/books/:id', element: <BookDetail /> },
+      {
+        path: '/neighborhood',
+        element: (
+          <ProtectedRoute>
+            <Neighborhood />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);
