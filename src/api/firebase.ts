@@ -30,7 +30,8 @@ export async function logout() {
 
 export function onUserStateChange(callback: any) {
   onAuthStateChanged(auth, async (user) => {
-    const updatedUser = user ? await adminUser(user) : null;
+    let updatedUser = user ? await adminUser(user) : null;
+
     callback(updatedUser);
   });
 }
@@ -51,6 +52,16 @@ export async function adminUser(user: any) {
     });
 }
 
+export async function getBooks() {
+  return get(ref(database, 'books')).then((snapshot) => {
+    if (snapshot.exists()) {
+      return Object.values(snapshot.val());
+    } else {
+      return [];
+    }
+  });
+}
+
 export async function addNewProduct(product: any) {
   const id = uuid();
   return set(ref(database, `books/${id}`), {
@@ -59,5 +70,26 @@ export async function addNewProduct(product: any) {
     priceStandard: parseInt(product.priceStandard),
     price: parseInt(product.price),
     quantity: parseInt(product.quantity),
+  });
+}
+
+export async function getNeighborhood(user: any) {
+  return get(ref(database, `users/${user.uid}`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        const neighborhood = snapshot.val().neighborhood;
+        return neighborhood;
+      } else {
+        return null;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+export async function setNeighborhood(id: string, neighborhood: string) {
+  return set(ref(database, `users/${id}`), {
+    neighborhood,
   });
 }

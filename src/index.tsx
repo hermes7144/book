@@ -11,6 +11,7 @@ import NewBook from './pages/NewBook';
 import BookDetail from './pages/BookDetail';
 import ProtectedRoute from './pages/ProtectedRoute';
 import Neighborhood from './pages/Neighborhood';
+import Books from './pages/Books';
 
 const router = createBrowserRouter([
   {
@@ -18,8 +19,8 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
-      { index: true, path: '/', element: <Home /> },
-      { path: '/books', element: <AllBooks /> },
+      { index: true, path: '/', element: <AllBooks /> },
+      { path: '/books', element: <Books /> },
       {
         path: '/books/new',
         element: (

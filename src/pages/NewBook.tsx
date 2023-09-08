@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import axios from 'axios';
-import { addNewProduct } from '../api/firebase';
+import { addNewProduct, getNeighborhood } from '../api/firebase';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../context/AuthContext';
 
 type BookListProps = {
   title: string;
@@ -22,12 +23,13 @@ const options = [
 const initialProps = { title: '', category: '', description: '', options: '', url: '', price: '', quantity: '' };
 
 export default function NewBook() {
+  const { user } = useAuthContext();
+
   const [search, setSearch] = useState('');
   const [bookList, setBookList] = useState<BookListProps[]>([]);
-  const [selected, setSelected] = useState('');
+  const [quality, setQuality] = useState('');
   const [product, setProduct] = useState<any>(initialProps);
   const [isUploading, setIsUploading] = useState(false);
-  const [success, setSuccess] = useState<string | null>('');
 
   const navigate = useNavigate();
 
@@ -66,28 +68,32 @@ export default function NewBook() {
     setProduct((product: any) => ({ ...product, [name]: value }));
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setIsUploading(true);
-    addNewProduct({ ...product, quality: selected }).then(() => {
+
+    const neighborhood = await getNeighborhood(user);
+    console.log({ ...product, quality, neighborhood });
+
+    addNewProduct({ ...product, quality, neighborhood }).then(() => {
       navigate(`/`);
     });
+
     setIsUploading(false);
   };
 
   const selectBook = (book: BookListProps) => {
     setSearch('');
-    setSelected('');
+    setQuality('');
     setBookList([]);
     setProduct({ ...book, price: '', quantity: 1, description: '', neighborhood: '' });
   };
 
-  const handleSelect = (e: any) => setSelected(e.target.value);
+  const handleSelect = (e: any) => setQuality(e.target.value);
 
   return (
     <section className='w-full text-center'>
       <h2 className='text-2xl font-bold my-1'>새로운 책 등록</h2>
-      {success && <p>🍬 {success}</p>}
       <div className='flex p-2'>
         <input
           className='my-0 flex-1 mr-2'
@@ -131,26 +137,22 @@ export default function NewBook() {
         <label className='text-brand font-bold text-left ' htmlFor='price'>
           판매가
         </label>
-        <input type='number' id='price' name='price' value={product.price} placeholder='판매가격' onChange={handleChange} />
+        <input type='number' id='price' name='price' value={product.price} placeholder='판매가격' onChange={handleChange} required />
         <label className='text-brand font-bold text-left ' htmlFor='quality'>
           품질
         </label>
-        <select className='p-2 border border-gray-300 outline-none mb-2' onChange={handleSelect} value={selected}>
+        <select className='p-2 border border-gray-300 outline-none mb-2' onChange={handleSelect} value={quality} required>
           <option value=''>-선택-</option>
           {options && options.map((option) => <option key={option.value}>{option.descrption}</option>)}
         </select>
         <label className='text-brand font-bold text-left' htmlFor='quantity'>
           수량
         </label>
-        <input type='number' name='quantity' id='quantity' value={product.quantity} placeholder='수량' onChange={handleChange} />
+        <input type='number' name='quantity' id='quantity' value={product.quantity} placeholder='수량' onChange={handleChange} required />
         <label className='text-brand font-bold text-left' htmlFor='description'>
           자세한 설명
         </label>
         <input type='text' name='description' value={product.description} placeholder='자세한 설명' onChange={handleChange} />
-        <label className='text-brand font-bold text-left' htmlFor='description'>
-          동네
-        </label>
-        <input type='text' name='neighborhood' value={product.neighborhood} placeholder='동네' onChange={handleChange} />
         <Button text={isUploading ? '업로드 중...' : '제품 등록하기'} disabled={isUploading} />
       </form>
     </section>
