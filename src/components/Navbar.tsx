@@ -16,7 +16,7 @@ export default function Navbar() {
         <h1>Levity Book</h1>
       </Link>
       <nav className='flex items-center gap-4 font-semibold'>
-        <Link to='/neighborhood'>동네</Link>
+        <Link to='/neighborhood'>동네 인증</Link>
         <Link to='/books'>Books</Link>
         {user && user.isAdmin && (
           <Link to='/books/new' className='text-2xl'>

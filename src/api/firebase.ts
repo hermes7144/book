@@ -67,9 +67,8 @@ export async function addNewProduct(product: any) {
   return set(ref(database, `books/${id}`), {
     ...product,
     id,
-    priceStandard: parseInt(product.priceStandard),
     price: parseInt(product.price),
-    quantity: parseInt(product.quantity),
+    createdDate: new Date().toISOString(), // 현재 시간을 ISO 문자열로 저장
   });
 }
 
