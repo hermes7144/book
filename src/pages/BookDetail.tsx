@@ -1,15 +1,29 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '../components/ui/Button';
+import { useAuthContext } from '../context/AuthContext';
+import { useChatContext } from '../context/ChatContext';
 
 export default function BookDetail() {
   const {
     state: {
-      book: { id, cover, title, priceStandard, price, quality, categoryName, description, tradeType },
+      book: { id, uid, cover, title, priceStandard, price, quality, categoryName, description, tradeType },
+      book,
     },
   } = useLocation();
+  const { user } = useAuthContext();
+  const { dispatch } = useChatContext();
 
-  const handleClick = () => {};
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (uid === user.uid) {
+      navigate(`/chats`, { state: { book } });
+    } else {
+      dispatch({ type: 'CHANGE_USER', payload: book });
+      navigate(`/chat/${id}`, { state: { book } });
+    }
+  };
   return (
     <>
       <p className='mx-4 mt-4 text-gray-700'>{categoryName}</p>

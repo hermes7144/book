@@ -5,13 +5,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import NotFound from './pages/NotFound';
-import Home from './pages/Home';
 import AllBooks from './pages/AllBooks';
 import NewBook from './pages/NewBook';
-import BookDetail from './pages/BookDetail';
 import ProtectedRoute from './pages/ProtectedRoute';
 import Neighborhood from './pages/Neighborhood';
 import Books from './pages/Books';
+import BookDetail from './pages/BookDetail';
+import BookChat from './pages/BookChat';
+import BookChats from './pages/BookChats';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,22 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: '/chats',
+        element: (
+          <ProtectedRoute>
+            <BookChats />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/chat/:id',
+        element: (
+          <ProtectedRoute>
+            <BookChat />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);
@@ -52,4 +69,3 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
-

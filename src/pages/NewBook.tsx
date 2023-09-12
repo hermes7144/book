@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import axios from 'axios';
-import { addNewProduct, getNeighborhood } from '../api/firebase';
+import { addNewBook, getNeighborhood } from '../api/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type BookListProps = {
   title: string;
@@ -28,11 +29,16 @@ export default function NewBook() {
   const [search, setSearch] = useState('');
   const [bookList, setBookList] = useState<BookListProps[]>([]);
   const [quality, setQuality] = useState('');
-  const [product, setProduct] = useState<any>(initialProps);
+  const [book, setBook] = useState<any>(initialProps);
   const [isUploading, setIsUploading] = useState(false);
   const [isSale, setIsSale] = useState(true);
   const [isGiveaway, setIsGiveaway] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+
+  const queryClient = useQueryClient();
+  const addBook = useMutation((book: any) => addNewBook(book), {
+    onSuccess: () => queryClient.invalidateQueries(['books']),
+  });
 
   const navigate = useNavigate();
 
@@ -69,15 +75,15 @@ export default function NewBook() {
     setSearch('');
     setQuality('');
     setBookList([]);
-    setProduct({ ...book, price: '', description: '', neighborhood: '' });
+    setBook({ ...book, price: '', description: '', neighborhood: '' });
   };
 
   const giveawayForm = (isGiveaway: boolean) => {
     if (isGiveaway) {
-      setProduct((product: any) => ({ ...product, price: 0 }));
+      setBook((book: any) => ({ ...book, price: 0 }));
       setIsDisabled(true);
     } else {
-      setProduct((product: any) => ({ ...product, price: '' }));
+      setBook((book: any) => ({ ...book, price: '' }));
       setIsDisabled(false);
     }
   };
@@ -85,7 +91,7 @@ export default function NewBook() {
   const handleChange = (e: any) => {
     const { name, value } = e.target;
 
-    setProduct((product: any) => ({ ...product, [name]: value }));
+    setBook((book: any) => ({ ...book, [name]: value }));
   };
 
   const handleSelect = (e: any) => setQuality(e.target.value);
@@ -98,11 +104,14 @@ export default function NewBook() {
 
     const neighborhood = await getNeighborhood(user);
 
-    addNewProduct({ ...product, quality, neighborhood, tradeType }).then((res) => {
-      console.log(res);
-
-      navigate(`/`);
-    });
+    addBook.mutate(
+      { ...book, quality, tradeType, neighborhood, uid: user.uid },
+      {
+        onSuccess: (res) => {
+          navigate(`/`);
+        },
+      }
+    );
 
     setIsUploading(false);
   };
@@ -139,17 +148,17 @@ export default function NewBook() {
       <br />
 
       <form className='flex flex-col px-12' onSubmit={handleSubmit}>
-        {product.cover && (
+        {book.cover && (
           <div className='w-full flex justify-center'>
-            <img className='w-50 h-60 ' src={product.cover} alt={product.title} />
+            <img className='w-50 h-60 ' src={book.cover} alt={book.title} />
           </div>
         )}
         <label className='text-brand font-bold text-left '>제목</label>
-        <input type='text' className='bg-gray-100' value={product.title} readOnly />
+        <input type='text' className='bg-gray-100' value={book.title} readOnly />
         <label className='text-brand font-bold text-left '>출판사</label>
-        <input type='text' className='bg-gray-100' value={product.publisher} readOnly />
+        <input type='text' className='bg-gray-100' value={book.publisher} readOnly />
         <label className='text-brand font-bold text-left '>정가</label>
-        <input type='number' className='bg-gray-100' value={product.priceStandard} readOnly />
+        <input type='number' className='bg-gray-100' value={book.priceStandard} readOnly />
 
         <label className='text-brand font-bold text-left pt-5 border-t border-gray-200 active '>거래 방식</label>
         <div className='flex my-2 gap-2'>
@@ -187,13 +196,13 @@ export default function NewBook() {
         </label>
         <div className='relative mb-6'>
           <div className='absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none'>￦</div>
-          <input type='number' id='price' name='price' className='border border-gray-300 focus:border-2 focus:border-gray-900 rounded-lg block w-full pl-10 p-2.5' value={product.price} onChange={handleChange} disabled={isDisabled} placeholder='가격을 입력해주세요.' required />
+          <input type='number' id='price' name='price' className='border border-gray-300 focus:border-2 focus:border-gray-900 rounded-lg block w-full pl-10 p-2.5' value={book.price} onChange={handleChange} disabled={isDisabled} placeholder='가격을 입력해주세요.' required />
         </div>
 
         <label className='text-brand font-bold text-left' htmlFor='description'>
           자세한 설명
         </label>
-        <textarea id='description' name='description' rows={4} className='block w-full px-0 text-gray-800 bg-white border border-gray-200 mb-2 resize-none' placeholder='신뢰할 수 있는 거래를 위해 자세히 적어주세요.' value={product.description} onChange={handleChange} required></textarea>
+        <textarea id='description' name='description' rows={4} className='block w-full px-0 text-gray-800 bg-white border border-gray-200 mb-2 resize-none' placeholder='신뢰할 수 있는 거래를 위해 자세히 적어주세요.' value={book.description} onChange={handleChange} required></textarea>
 
         <Button text={isUploading ? '업로드 중...' : '제품 등록하기'} disabled={isUploading} />
       </form>

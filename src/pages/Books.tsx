@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { getBooks } from '../api/firebase';
 import { useQuery } from '@tanstack/react-query';
 import BookCard from '../components/BookCard';
+import { useAuthContext } from '../context/AuthContext';
 
 export default function Books() {
-  const { isLoading, error, data: books } = useQuery(['products'], getBooks);
+  const { isLoading, error, data: books } = useQuery(['books'], getBooks, { staleTime: 1000 * 60 });
 
   return (
     <>

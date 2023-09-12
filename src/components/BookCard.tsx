@@ -3,13 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import DateDifference from './ui/DateDifference';
 
 export default function BookCard({ book, book: { id, cover, title, priceStandard, price, quality, tradeType, neighborhood, createdDate } }: any) {
-  const date1: Date = new Date('2023-12-31');
-  const date2: Date = new Date(createdDate);
-
-  const timeDifference: number = date1.getTime() - date2.getTime(); // 밀리초 단위로 차이 계산
-  const daysDifference: number = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // 일 단위로 변환
-  console.log(`날짜 간의 차이: ${daysDifference}일`);
-
   const navigate = useNavigate();
   return (
     <li
