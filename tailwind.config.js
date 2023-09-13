@@ -9,6 +9,11 @@ module.exports = {
       backgroundImage: {
         banner: `url('../public/images/banner.jpg')`,
         avatar: `url('../public/images/avatar.png')`
+      },
+      maxWidth: {
+        '1/4': '25%',
+        '1/2': '50%',
+        '3/4': '75%',
       }
     },
   },

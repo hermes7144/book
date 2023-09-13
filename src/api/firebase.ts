@@ -123,8 +123,8 @@ export async function setUser(user: any) {
         displayName: user.displayName,
         email: user.email,
       });
+      await setDoc(doc(fireStore, 'userChats', user.uid), {});
     }
-    await setDoc(doc(fireStore, 'userChats', user.uid), {});
   } catch (err) {
     console.log(err);
   }

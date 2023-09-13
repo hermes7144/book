@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import axios from 'axios';
-import { addNewBook, getNeighborhood } from '../api/firebase';
+import { getNeighborhood } from '../api/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useBooks from '../hooks/useBooks';
 
 type BookListProps = {
   title: string;
@@ -35,10 +35,7 @@ export default function NewBook() {
   const [isGiveaway, setIsGiveaway] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
-  const queryClient = useQueryClient();
-  const addBook = useMutation((book: any) => addNewBook(book), {
-    onSuccess: () => queryClient.invalidateQueries(['books']),
-  });
+  const { addBook } = useBooks();
 
   const navigate = useNavigate();
 

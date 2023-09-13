@@ -5,6 +5,8 @@ import { useAuthContext } from '../context/AuthContext';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import Chat from '../components/Chat';
 import { useChatContext } from '../context/ChatContext';
+import Messages from '../components/Messages';
+import Input from '../components/Input';
 
 export default function BookChat() {
   const { user } = useAuthContext();
@@ -29,5 +31,11 @@ export default function BookChat() {
     getChatInfo();
   }, [combineId]);
 
-  return <Chat />;
+  return (
+    <div className='w-full p-5'>
+      <div className='h-12 bg-slate-500'></div>
+      <Messages />
+      <Input />
+    </div>
+  );
 }

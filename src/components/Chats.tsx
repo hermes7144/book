@@ -12,20 +12,11 @@ export default function Chats() {
   const navigate = useNavigate();
   const params = useParams(); // test
 
-  // console.log('test');
-
-  // const q = query(collection(fireStore, 'userChats'), where('id', '==', params.id));
-  // try {
-  //   const querySnapshot = await getDocs(q);
-  //   querySnapshot.forEach((doc) => {
-  //     console.log(doc.data());
-  //   });
-  // } catch (err) {}
-
   useEffect(() => {
     const getChats = () => {
       const unsub = onSnapshot(doc(fireStore, 'userChats', uid), (doc) => {
-        setChats(doc.data());
+        const chatsData = Object.entries(doc.data()).filter((chat) => chat[1].id === params.id);
+        setChats(chatsData);
       });
 
       return () => {
@@ -33,7 +24,7 @@ export default function Chats() {
       };
     };
     uid && getChats();
-  }, [uid]);
+  }, [uid, params.id]);
 
   const handleSelect = (user) => {
     dispatch({ type: 'CHANGE_USER', payload: user });
@@ -42,7 +33,7 @@ export default function Chats() {
 
   return (
     <div className='bg-slate-600'>
-      {Object.entries(chats)?.map((chat: any) => (
+      {chats.map((chat: any) => (
         <div className='p-2.5 flex items-center gap-2.5 text-white cursor-pointer' key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
           <div className='w-10 h-10 rounded-full bg-avatar' />
           <div>
