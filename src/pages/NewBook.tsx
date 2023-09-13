@@ -95,6 +95,12 @@ export default function NewBook() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    if (!book?.title) {
+      alert('책을 먼저 선택해주세요!');
+      return false;
+    }
+
     setIsUploading(true);
 
     const tradeType = isSale ? 'sale' : 'giveaway';
@@ -114,11 +120,11 @@ export default function NewBook() {
   };
 
   return (
-    <section className='w-full text-center'>
-      <h2 className='text-2xl font-bold my-1'>새로운 책 등록</h2>
-      <div className='flex p-2'>
+    <section className='w-full text-center px-12'>
+      <h2 className='text-2xl font-bold my-4'>새로운 책 등록</h2>
+      <div className='flex'>
         <input
-          className='my-0 flex-1 mr-2'
+          className='my-0 flex-1 outline-none border border-gray-300 '
           type='text'
           name='book'
           value={search}
@@ -144,20 +150,26 @@ export default function NewBook() {
         })}
       <br />
 
-      <form className='flex flex-col px-12' onSubmit={handleSubmit}>
+      <form className='flex flex-col' onSubmit={handleSubmit}>
         {book.cover && (
           <div className='w-full flex justify-center'>
             <img className='w-50 h-60 ' src={book.cover} alt={book.title} />
           </div>
         )}
-        <label className='text-brand font-bold text-left '>제목</label>
-        <input type='text' className='bg-gray-100' value={book.title} readOnly />
-        <label className='text-brand font-bold text-left '>출판사</label>
-        <input type='text' className='bg-gray-100' value={book.publisher} readOnly />
-        <label className='text-brand font-bold text-left '>정가</label>
-        <input type='number' className='bg-gray-100' value={book.priceStandard} readOnly />
 
-        <label className='text-brand font-bold text-left pt-5 border-t border-gray-200 active '>거래 방식</label>
+        {/* 
+input {
+  @apply p-2 outline-none border border-gray-300 my-2;
+} */}
+
+        <label className='text-brand font-bold text-left '>제목</label>
+        <input type='text' className='p-2 outline-none border border-gray-300 my-2 bg-gray-100 rounded-lg' value={book.title} readOnly />
+        <label className='text-brand font-bold text-left '>출판사</label>
+        <input type='text' className='p-2 outline-none border border-gray-300 my-2 bg-gray-100 rounded-lg' value={book.publisher} readOnly />
+        <label className='text-brand font-bold text-left '>정가</label>
+        <input type='number' className='p-2 outline-none border border-gray-300 my- bg-gray-100 rounded-lg' value={book.priceStandard} readOnly />
+
+        <label className='text-brand font-bold text-left pt-2 border-t border-gray-200 active'>거래 방식</label>
         <div className='flex my-2 gap-2'>
           <button
             type='button'
@@ -199,7 +211,7 @@ export default function NewBook() {
         <label className='text-brand font-bold text-left' htmlFor='description'>
           자세한 설명
         </label>
-        <textarea id='description' name='description' rows={4} className='block w-full px-0 text-gray-800 bg-white border border-gray-200 mb-2 resize-none' placeholder='신뢰할 수 있는 거래를 위해 자세히 적어주세요.' value={book.description} onChange={handleChange} required></textarea>
+        <textarea id='description' name='description' rows={4} className='block w-full p-1 text-gray-800 bg-white border border-gray-200 mb-2 resize-none rounded-lg' placeholder='신뢰할 수 있는 거래를 위해 자세히 적어주세요.' value={book.description} onChange={handleChange} required></textarea>
 
         <Button text={isUploading ? '업로드 중...' : '제품 등록하기'} disabled={isUploading} />
       </form>

@@ -18,7 +18,9 @@ export default function BookCard({ book, book: { id, cover, title, priceStandard
             {neighborhood}ˑ<DateDifference date={createdDate} />
           </span>
           <div className='flex justify-between'>
-            {tradeType === 'sale' ? <p>{price}원</p> : '나눔'}
+            <div>
+              <span>{tradeType === 'sale' ? `${price}원` : '나눔'}</span> <span className='text-sm'>({(100 - (price / priceStandard) * 100).toFixed(2)}% 할인)</span>
+            </div>
             <p className='mb-2 px-2 text-gray-600'>{quality}</p>
           </div>
         </div>

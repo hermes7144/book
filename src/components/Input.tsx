@@ -62,7 +62,7 @@ export default function Input() {
   };
 
   return (
-    <div className='h-10 bg-white p-3 flex items-center justify-between'>
+    <div className='h-10 bg-white  flex items-center justify-between border border-gray-300'>
       <input type='text' className='w-full border-none outline-none' onChange={(e) => setText(e.target.value)} value={text} />
       <div>
         <button className='border-none p-1 text-white bg-brand' onClick={handleSend}>

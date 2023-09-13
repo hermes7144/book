@@ -61,7 +61,9 @@ export default function BookDetail() {
               </section>
               <p className='mb-2 px-2 text-red-500 font-bold text-xl'>{quality}</p>
             </div>
-            <p className='py-4 text-lg'>{description}</p>
+            <div>
+              <textarea className='w-full p-1 text-gray-800 mb-2 resize-none'>{description}</textarea>
+            </div>
             <Button text={'채팅하기'} onClick={handleClick} />
           </div>
         </div>
