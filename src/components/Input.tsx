@@ -5,30 +5,33 @@ import { v4 as uuid } from 'uuid';
 import { useAuthContext } from '../context/AuthContext';
 import { serverTimestamp } from 'firebase/database';
 import { useChatContext } from '../context/ChatContext';
+import { useParams } from 'react-router-dom';
 
 export default function Input() {
   const { user } = useAuthContext();
   const { data } = useChatContext();
-  console.log(data);
-
   const [text, setText] = useState('');
+  const params = useParams(); // test
+
   const handleSend = async () => {
     const res = await getDoc(doc(fireStore, 'chats', data.chatId));
 
     if (!res.data().messages.length) {
       await updateDoc(doc(fireStore, 'userChats', user.uid), {
         [data.chatId + '.userInfo']: {
-          uid: data.user.uid,
-          displayName: data.user.displayName,
+          uid: data.otherUser.uid,
+          displayName: data.otherUser.displayName,
         },
         [data.chatId + '.date']: serverTimestamp(),
+        [data.chatId + '.id']: params.id,
       });
-      await updateDoc(doc(fireStore, 'userChats', data.user.uid), {
+      await updateDoc(doc(fireStore, 'userChats', data.otherUser.uid), {
         [data.chatId + '.userInfo']: {
           uid: user.uid,
           displayName: user.displayName,
         },
         [data.chatId + '.date']: serverTimestamp(),
+        [data.chatId + '.id']: params.id,
       });
     }
 
@@ -48,7 +51,7 @@ export default function Input() {
       [data.chatId + '.date']: serverTimestamp(),
     });
 
-    await updateDoc(doc(fireStore, 'userChats', data.user.uid), {
+    await updateDoc(doc(fireStore, 'userChats', data.otherUser.uid), {
       [data.chatId + '.lastMessage']: {
         text,
       },

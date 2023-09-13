@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import { useAuthContext } from '../context/AuthContext';
 import { useChatContext } from '../context/ChatContext';
+import { getUser } from '../api/firebase';
 
 export default function BookDetail() {
   const {
@@ -13,15 +14,27 @@ export default function BookDetail() {
   } = useLocation();
   const { user } = useAuthContext();
   const { dispatch } = useChatContext();
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function setUserInfo() {
+      try {
+        const res = await getUser(uid);
+        const writer = res.data();
+
+        dispatch({ type: 'CHANGE_USER', payload: { ...writer, id } });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    setUserInfo();
+  }, [dispatch, uid, id]);
 
   const handleClick = () => {
     if (uid === user.uid) {
-      navigate(`/chats`, { state: { book } });
+      navigate(`/chats/${id}`);
     } else {
-      dispatch({ type: 'CHANGE_USER', payload: book });
-      navigate(`/chat/${id}`, { state: { book } });
+      navigate(`/chat/${id}`);
     }
   };
   return (

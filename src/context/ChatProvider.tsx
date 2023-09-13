@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import { useAuthContext } from './AuthContext';
 import { ChatContext } from './ChatContext';
+import { useParams } from 'react-router-dom';
 
 type ChatProviderProps = {
   children: React.ReactNode;
@@ -8,19 +9,19 @@ type ChatProviderProps = {
 
 export function ChatProvider({ children }: ChatProviderProps) {
   const { user } = useAuthContext();
+  const params = useParams(); // test
 
   const INITIAL_STATE = {
-    chatId: 'null',
-    user: {},
+    chatId: null,
+    otherUser: {},
   };
 
   const chatReducer = (state, action): any => {
-    console.log('action', action);
     switch (action.type) {
       case 'CHANGE_USER': {
         return {
-          user: action.payload,
-          chatId: action.payload.id + (action.payload.uid > user.uid ? action.payload.uid + user.uid : user.uid + action.payload.uid),
+          otherUser: action.payload,
+          chatId: params.id + (action.payload.uid > user.uid ? action.payload.uid + user.uid : user.uid + action.payload.uid),
         };
       }
       default:

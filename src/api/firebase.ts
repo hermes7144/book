@@ -102,14 +102,20 @@ export async function setNeighborhood(id: string, neighborhood: string) {
   });
 }
 
-// export async function getUser(uid) {
-//   const res = await getDoc(doc(fireStore, 'users', uid));
-//   return res;
-// }
+export async function getUser(uid) {
+  const res = await getDoc(doc(fireStore, 'users', uid));
+  return res;
+}
 
 export async function setUser(user: any) {
   try {
     const res = await getDoc(doc(fireStore, 'users', user.uid));
+
+    await setDoc(doc(fireStore, 'users', user.uid), {
+      uid: user.uid,
+      displayName: user.displayName,
+      email: user.email,
+    });
 
     if (!res.exists()) {
       await setDoc(doc(fireStore, 'users', user.uid), {

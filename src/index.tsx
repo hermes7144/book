@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/chats',
+        path: '/chats/:id',
         element: (
           <ProtectedRoute>
             <BookChats />
