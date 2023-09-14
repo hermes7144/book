@@ -1,0 +1,10 @@
+[[redirects]]
+from = "/APIAddress/*"
+to="http://api.vworld.kr/req/address/:splat"
+status=200
+
+[[redirects]]
+from = "/itemSearch/*"
+to="http://www.aladin.co.kr/ttb/api/ItemSearch.aspx/:splat"
+status=200
+
