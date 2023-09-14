@@ -14,14 +14,14 @@ const geolocationOptions = {
 
 export default function Neighborhood() {
   const mapRef = useRef<any>();
-  const { location, error } = useGeoLocation(geolocationOptions);
+  const { location } = useGeoLocation(geolocationOptions);
   const { user } = useAuthContext();
 
   const [neighborhood, setNeiborhood] = useState('');
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get(`/APIAddress?service=address&request=getAddress&version=2.0&crs=epsg:4326&point=${location?.longitude},${location?.latitude}&format=json&type=both&zipcode=true&simple=false&key=12585315-29A2-3983-81D4-BAD9AAA9D5A4`);
+      const res = await axios.get(`/APIAddress?point=${location?.longitude},${location?.latitude}&${process.env.REACT_APP_KAKAO_MAP}`);
       if (res.data.response.result) {
         const address = res.data.response.result[0].text.split(' ')[2];
         setNeiborhood(address);
@@ -32,7 +32,7 @@ export default function Neighborhood() {
   async function handleSearch() {
     const map = mapRef.current;
 
-    const res = await axios.get(`/APIAddress?service=address&request=getAddress&version=2.0&crs=epsg:4326&point=${map.getCenter().getLng()},${map.getCenter().getLat()}&format=json&type=both&zipcode=true&simple=false&key=12585315-29A2-3983-81D4-BAD9AAA9D5A4`);
+    const res = await axios.get(`/APIAddress?point=${map.getCenter().getLng()},${map.getCenter().getLat()}&&${process.env.REACT_APP_KAKAO_MAP}`);
     if (res.data.response.result) {
       const address = res.data.response.result[0].text.split(' ')[2];
       setNeiborhood(address);

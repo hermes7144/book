@@ -9,11 +9,10 @@ const firebaseConfig = {
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
   databaseURL: process.env.REACT_APP_FIREBASE_DB_URL,
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-
-  storageBucket: 'book-e546f.appspot.com',
-  messagingSenderId: '1053525039228',
-  appId: '1:1053525039228:web:2ebba00ec2c0d67b0991f9',
-  measurementId: 'G-4W4PY7NP0R',
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
