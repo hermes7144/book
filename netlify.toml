@@ -8,3 +8,7 @@ from = "/itemSearch/*"
 to="http://www.aladin.co.kr/ttb/api/ItemSearch.aspx/:splat"
 status=200
 
+[[redirects]]
+from = "/"
+to = "/index.html"
+status = 200
