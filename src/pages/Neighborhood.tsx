@@ -13,30 +13,35 @@ const geolocationOptions = {
 };
 
 export default function Neighborhood() {
+  const { kakao } = window;
+  const geocoder = new kakao.maps.services.Geocoder(); // 좌표 -> 주소로 변환해주는 객체
+
   const mapRef = useRef<any>();
   const { location } = useGeoLocation(geolocationOptions);
   const { user } = useAuthContext();
 
   const [neighborhood, setNeiborhood] = useState('');
 
-  useEffect(() => {
-    (async () => {
-      const res = await axios.get(`/APIAddress?point=${location?.longitude},${location?.latitude}&${process.env.REACT_APP_VWORLD}`);
-      if (res.data.response.result) {
-        const address = res.data.response.result[0].text.split(' ')[2];
+  function getNeighborhood(longitude, latitude) {
+    const callback = function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        const address = result[0].address.region_3depth_name;
         setNeiborhood(address);
       }
+    };
+    geocoder.coord2Address(longitude, latitude, callback);
+  }
+
+  useEffect(() => {
+    (async () => {
+      getNeighborhood(location?.longitude, location?.latitude);
     })();
-  }, [location]);
+  }, [getNeighborhood, location?.latitude, location?.longitude]);
 
   async function handleSearch() {
     const map = mapRef.current;
 
-    const res = await axios.get(`/APIAddress?point=${map.getCenter().getLng()},${map.getCenter().getLat()}&&${process.env.REACT_APP_VWORLD}`);
-    if (res.data.response.result) {
-      const address = res.data.response.result[0].text.split(' ')[2];
-      setNeiborhood(address);
-    }
+    getNeighborhood(map.getCenter().getLng(), map.getCenter().getLat());
   }
 
   async function handleSubmit() {

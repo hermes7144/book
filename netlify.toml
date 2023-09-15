@@ -1,10 +1,4 @@
 [[redirects]]
-from = "/APIAddress/*"
-to="https://api.vworld.kr/req/address/:splat"
-status=200
-force = true
-
-[[redirects]]
 from = "/itemSearch/*"
 to="https://www.aladin.co.kr/ttb/api/ItemSearch.aspx/:splat"
 status=200
