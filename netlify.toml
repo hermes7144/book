@@ -1,12 +1,12 @@
 [[redirects]]
 from = "/APIAddress/*"
-to="http://api.vworld.kr/req/address/:splat"
+to="https://api.vworld.kr/req/address/:splat"
 status=200
 force = true
 
 [[redirects]]
 from = "/itemSearch/*"
-to="http://www.aladin.co.kr/ttb/api/ItemSearch.aspx/:splat"
+to="https://www.aladin.co.kr/ttb/api/ItemSearch.aspx/:splat"
 status=200
 force = true
 
