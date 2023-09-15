@@ -5,7 +5,7 @@ module.exports = function (app) {
     '/APIAddress',
     createProxyMiddleware({
       target: 'https://api.vworld.kr/req/address',
-      // changeOrigin: true,
+      changeOrigin: true,
       pathRewrite: {
         '^/APIAddress': '',
       },
