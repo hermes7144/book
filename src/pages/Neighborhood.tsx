@@ -21,7 +21,7 @@ export default function Neighborhood() {
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get(`/APIAddress?point=${location?.longitude},${location?.latitude}&${process.env.REACT_APP_KAKAO_MAP}`);
+      const res = await axios.get(`/APIAddress?point=${location?.longitude},${location?.latitude}&${process.env.REACT_APP_VWORLD}`);
       if (res.data.response.result) {
         const address = res.data.response.result[0].text.split(' ')[2];
         setNeiborhood(address);
@@ -32,7 +32,7 @@ export default function Neighborhood() {
   async function handleSearch() {
     const map = mapRef.current;
 
-    const res = await axios.get(`/APIAddress?point=${map.getCenter().getLng()},${map.getCenter().getLat()}&&${process.env.REACT_APP_KAKAO_MAP}`);
+    const res = await axios.get(`/APIAddress?point=${map.getCenter().getLng()},${map.getCenter().getLat()}&&${process.env.REACT_APP_VWORLD}`);
     if (res.data.response.result) {
       const address = res.data.response.result[0].text.split(' ')[2];
       setNeiborhood(address);
