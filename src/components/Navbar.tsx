@@ -11,14 +11,15 @@ export default function Navbar() {
 
   return (
     <header className='flex justify-between border-b border-gray-300 p-2'>
-      <Link to='/' className='flex items-center text-4xl text-brand'>
-        <FiBook />
-        <h1>Levity Book</h1>
-      </Link>
+      <nav className='flex items-end gap-4 font-semibold'>
+        <Link to='/' className='flex items-center text-4xl text-brand'>
+          <FiBook />
+          <h1>Levity Book</h1>
+        </Link>
+        <Link to='/neighborhood'>{user ? (user?.neighborhood ? user.neighborhood : '동네 인증') : ''}</Link>
+      </nav>
       <nav className='flex items-center gap-4 font-semibold'>
-        <Link to='/neighborhood'>동네 인증</Link>
-        <Link to='/books'>Books</Link>
-        {user && user.isAdmin && (
+        {user && (
           <Link to='/books/new' className='text-2xl'>
             <BsFillPencilFill />
           </Link>

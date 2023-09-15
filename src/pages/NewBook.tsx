@@ -105,10 +105,8 @@ export default function NewBook() {
 
     const tradeType = isSale ? 'sale' : 'giveaway';
 
-    const neighborhood = await getNeighborhood(user);
-
     addBook.mutate(
-      { ...book, quality, tradeType, neighborhood, uid: user.uid },
+      { ...book, quality, tradeType, neighborhood: user.neighborhood, uid: user.uid },
       {
         onSuccess: (res) => {
           navigate(`/`);
@@ -156,11 +154,6 @@ export default function NewBook() {
             <img className='w-50 h-60 ' src={book.cover} alt={book.title} />
           </div>
         )}
-
-        {/* 
-input {
-  @apply p-2 outline-none border border-gray-300 my-2;
-} */}
 
         <label className='text-brand font-bold text-left '>제목</label>
         <input type='text' className='p-2 outline-none border border-gray-300 my-2 bg-gray-100 rounded-lg' value={book.title} readOnly />

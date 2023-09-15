@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { login, logout, onUserStateChange } from '../api/firebase';
+import { login, logout, onUserStateChange, setNeighborhood } from '../api/firebase';
 
 import { User } from '@firebase/auth';
 import { AuthContext } from './AuthContext';
@@ -22,5 +22,5 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <AuthContext.Provider value={{ user, uid: user && user.uid, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, setUser, uid: user && user.uid, login, logout, setNeighborhood }}>{children}</AuthContext.Provider>;
 }

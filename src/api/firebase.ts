@@ -38,8 +38,7 @@ export async function logout() {
 
 export function onUserStateChange(callback: any) {
   onAuthStateChanged(auth, async (user) => {
-    let updatedUser = user ? await adminUser(user) : null;
-
+    let updatedUser = user ? await getNeighborhood(user) : null;
     callback(updatedUser);
   });
 }
@@ -85,9 +84,9 @@ export async function getNeighborhood(user: any) {
     .then((snapshot) => {
       if (snapshot.exists()) {
         const neighborhood = snapshot.val().neighborhood;
-        return neighborhood;
+        return { ...user, neighborhood };
       } else {
-        return null;
+        return user;
       }
     })
     .catch((error) => {
@@ -95,8 +94,8 @@ export async function getNeighborhood(user: any) {
     });
 }
 
-export async function setNeighborhood(id: string, neighborhood: string) {
-  return set(ref(database, `users/${id}`), {
+export async function setNeighborhood(uid: string, neighborhood: string) {
+  return set(ref(database, `users/${uid}`), {
     neighborhood,
   });
 }
@@ -109,12 +108,6 @@ export async function getUser(uid) {
 export async function setUser(user: any) {
   try {
     const res = await getDoc(doc(fireStore, 'users', user.uid));
-
-    await setDoc(doc(fireStore, 'users', user.uid), {
-      uid: user.uid,
-      displayName: user.displayName,
-      email: user.email,
-    });
 
     if (!res.exists()) {
       await setDoc(doc(fireStore, 'users', user.uid), {
