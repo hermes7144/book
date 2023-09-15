@@ -1,6 +1,6 @@
 [[redirects]]
 from = "/APIAddress/*"
-to="https://api.vworld.kr/req/address/:splat"
+to="http://api.vworld.kr/req/address/:splat"
 status=200
 force = true
 
